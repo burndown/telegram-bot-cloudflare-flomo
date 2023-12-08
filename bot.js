@@ -1,10 +1,12 @@
 /**
- * https://github.com/cvzi/telegram-bot-cloudflare
+ * A js modify from https://github.com/cvzi/telegram-bot-cloudflare
+ * to support forward message from telegram to flomo
  */
 
 const TOKEN = ENV_BOT_TOKEN // Get it from @BotFather https://core.telegram.org/bots#6-botfather
 const WEBHOOK = '/endpoint'
 const SECRET = ENV_BOT_SECRET // A-Z, a-z, 0-9, _ and -
+const API_URL = ENV_FLOMO_API_URI //flomo api address
 
 /**
  * Wait for requests to the worker
@@ -53,10 +55,48 @@ async function onUpdate (update) {
 /**
  * Handle incoming Message
  * https://core.telegram.org/bots/api#message
- */
-function onMessage (message) {
+ *
+* function onMessage (message) {
   return sendPlainText(message.chat.id, 'Echo:\n' + message.text)
+*}
+/
+
+
+
+
+/**
+ * Handle incoming Message
+ * https://core.telegram.org/bots/api#message
+ */
+async function onMessage (message) {
+  // Extract the text from the message
+  const text = message.text;
+
+  // Define the API URL for forwarding the message
+  const forwardApiUrl = API_URL;
+
+  // Prepare the payload to be sent to the API
+  const payload = JSON.stringify({
+    content: text
+  });
+
+  // Set up the request options for the fetch call
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: payload
+  };
+
+  // Forward the message to the API
+  await fetch(forwardApiUrl, requestOptions);
+
+  // Optionally, send a confirmation message back to the Telegram chat
+  return sendPlainText(message.chat.id, 'Message forwarded');
 }
+
+
 
 /**
  * Send plain text message
