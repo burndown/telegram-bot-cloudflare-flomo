@@ -2,7 +2,8 @@
 
 This is a fork from the [cvzi's telegram bot example](https://github.com/cvzi/telegram-bot-cloudflare/tree/main). 
 
-This code has been updated to forward message from Telegram Bot to [flomo](https://flomoapp.com/)
+This code (bot.js) has been updated to forward message from Telegram Bot to [flomo](https://flomoapp.com/)
+
 
 ## Setup:
 
